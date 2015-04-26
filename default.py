@@ -1225,13 +1225,13 @@ class window(xbmcgui.WindowXMLDialog):
             elif debug:
                 print "Netflixbmc: unmapped key action=%d" % (action.getId())
             if key is not None:
-                p = subprocess.Popen('xdotool search --onlyvisible --class "google-chrome|Chromium" key %s' % key, shell=True)
+                if debug:
+                    print "Netflixbmc: remote action=%d key=%s xdotool result=%d" % (action.getId(), key, p.returncode)
+                p = subprocess.Popen('xdotool key %s' % key, shell=True)
                 p.wait()
                 # 0 for success, 127 if xdotool not found in PATH. Return code is 1 if window not found (indicating should close).
                 if not p.returncode in [0,127] or doClose:
                     self.close()
-                if debug:
-                    print "Netflixbmc: remote action=%d key=%s xdotool result=%d" % (action.getId(), key, p.returncode)
         elif osOSX:
             proc = subprocess.Popen('/bin/ps ax', shell=True, stdout=subprocess.PIPE)
             procAll = ""
